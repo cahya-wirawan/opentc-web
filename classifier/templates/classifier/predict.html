@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Text Classification</title>
-</head>
-<body>
+{% extends "classifier/base.html" %}
+{% block content %}
+
 <h1>Text Classification</h1>
+{# Load the tag library #}
+{% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 
-<form action="{% url 'classifier:predict_submit' %}" method="post">
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<form action="{% url 'classifier:predict' %}" method="post" class="form">
     {% csrf_token %}
-    <textarea name="data" cols=40 rows=4></textarea>
+    {% bootstrap_form form %}
     <input type="submit" value="submit" />
 </form>
-</body>
-</html>
+
+{% endblock %}

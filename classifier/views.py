@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Classifier, Classes
 from classifier.apps import ClassifierConfig
-
+from .forms import NameForm, MessageForm
 
 def index(request):
     classifier_list = Classifier.objects.order_by('name')[:5]
@@ -23,18 +23,18 @@ def predict(request):
     response = ClassifierConfig.opentc.command("PING\n")
     response = json.loads(response.decode('utf-8'))
     print("response: {}".format(response))
-    data = {'data': ClassifierConfig.name}
-    return render(request, 'classifier/predict.html', {'data': data})
-
-
-def predict_submit(request):
     if request.method == "POST":
-        data = request.POST["data"]
-        data = ClassifierConfig.remove_newline.sub(' ', data)
-        response = ClassifierConfig.opentc.predict_stream(data.encode("utf-8"))
-        result = json.loads(response.decode('utf-8'))["result"]
-        request.session['data'] = result
-    return HttpResponseRedirect(reverse('classifier:predict_result'))
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.cleaned_data['message']
+            message = ClassifierConfig.remove_newline.sub(' ', message)
+            response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
+            result = json.loads(response.decode('utf-8'))["result"]
+            request.session['data'] = result
+            return HttpResponseRedirect(reverse('classifier:predict_result'))
+    else:
+        form = MessageForm()
+    return render(request, 'classifier/predict.html', {'form': form})
 
 
 def predict_result(request):

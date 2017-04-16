@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ['localhost', 'opentc.oldjava.org']
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap3',
     'classifier.apps.ClassifierConfig',
     'django.contrib.admin',
     'django.contrib.auth',

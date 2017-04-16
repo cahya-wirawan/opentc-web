@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>OpenTC</title>
-</head>
-<body>
+{% extends "classifier/base.html" %}
+{% block content %}
+
+<h1>OpenTC Classifier</h1>
 {% if classifier_list %}
-<ul>
+<ul class="list-group">
     {% for classifier in classifier_list %}
-    <li><a href="{% url 'classifier:detail' classifier.id %}">{{ classifier.name }}</a></li>
+    <li class="list-group-item"><a href="{% url 'classifier:detail' classifier.id %}">{{ classifier.name }}</a></li>
     {% endfor %}
 </ul>
 {% else %}
 <p>No classifiers are available.</p>
 {% endif %}
-</body>
-</html>
+
+{% endblock %}

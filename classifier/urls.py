@@ -11,8 +11,6 @@ urlpatterns = [
     url(r'^(?P<classifier_id>[0-9]+)/$', views.detail, name='detail'),
     # ex: /classifier/predict/
     url(r'^predict/$', views.predict, name='predict'),
-    # ex: /classifier/predict_submit/
-    url(r'^predict_submit/$', views.predict_submit, name='predict_submit'),
     # ex: /classifier/predict_result/
     url(r'^predict_result/$', views.predict_result, name='predict_result'),
     # ex: /classifier/request_submit/
