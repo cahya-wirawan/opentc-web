@@ -1,0 +1,4 @@
+
+opentc_server:
+  address: localhost
+  port: 3333

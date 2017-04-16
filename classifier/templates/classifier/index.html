@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OpenTC</title>
+</head>
+<body>
+{% if classifier_list %}
+<ul>
+    {% for classifier in classifier_list %}
+    <li><a href="{% url 'classifier:detail' classifier.id %}">{{ classifier.name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No classifiers are available.</p>
+{% endif %}
+</body>
+</html>

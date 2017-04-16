@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Classification</title>
+</head>
+<body>
+<h1>Text Classification: {{ data }} </h1>
+
+
+<form action="{% url 'classifier:predict_submit' %}" method="post">
+    {% csrf_token %}
+    <textarea name="data" cols=40 rows=4></textarea>
+    <input type="submit" value="submit" />
+</form>
+</body>
+</html>
