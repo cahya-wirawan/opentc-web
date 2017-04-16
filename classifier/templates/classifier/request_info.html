@@ -8,10 +8,16 @@
 <h1>Text Classification</h1>
 
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    data: {{ key }}
-    {% for key, value in result.items %}
-    <label name="{{ key }}">{{ key }}: {{ value }}</label><br />
+    <ul>
+    {% for name, analysis in result.items %}
+        <li><label name="{{ name }}">{{ name }}</label></li>
+        <ul>
+        {% for classifier, categories in analysis.items %}
+            <li><label name="{{ classifier }}">{{ classifier }}: {{ categories }}</label></li>
+        {% endfor %}
+        </ul>
     {% endfor %}
+    </ul>
 
 </body>
 </html>
