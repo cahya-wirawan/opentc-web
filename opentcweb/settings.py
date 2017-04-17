@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'opentc_web.urls'
+ROOT_URLCONF = 'opentcweb.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'opentc_web.wsgi.application'
+WSGI_APPLICATION = 'opentcweb.wsgi.application'
 
 
 # Database

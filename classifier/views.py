@@ -1,9 +1,10 @@
-from urllib.parse import urlencode
+from urllib.parse import urlencode, unquote
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import re
 from .models import Classifier, Classes
 from classifier.apps import ClassifierConfig
 from .forms import NameForm, MessageForm
@@ -31,6 +32,7 @@ def predict(request):
             response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
             result = json.loads(response.decode('utf-8'))["result"]
             request.session['data'] = result
+            # return render(request, 'classifier/predict.html', {'form': form})
             return HttpResponseRedirect(reverse('classifier:predict_result'))
     else:
         form = MessageForm()
@@ -44,13 +46,13 @@ def predict_result(request):
 
 @csrf_exempt
 def request_submit(request):
+    data = {"result": ""}
     if request.method == "POST":
         if "result" in request.POST:
-            data = { "result": request.POST["result"]}
-        else:
-            data = { "result": "" }
-    else:
-        data = { "result": "{}" }
+            result = request.POST["result"]
+            # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", result):
+            if ClassifierConfig.input_data_validity.search(result):
+                data = {"result": request.POST["result"]}
     encoded = urlencode(data)
     redirect_url = "http://{}{}?{}".format(request.META['HTTP_HOST'],
                                            reverse('classifier:request_info'),
@@ -60,5 +62,12 @@ def request_submit(request):
 
 def request_info(request):
     data = request.GET.get("result", "{}")
-    result = json.loads(data)
-    return render(request, 'classifier/request_info.html', {'result': result})
+    # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", data):
+    if ClassifierConfig.input_data_validity.search(data):
+        try:
+            result = json.loads(data)
+            return render(request, 'classifier/request_info.html', {'result': result})
+        except ValueError:
+            return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
+    else:
+        return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
