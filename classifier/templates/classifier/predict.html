@@ -11,6 +11,11 @@
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+
+<p>Currently it supports Bayes, Support Vector Machine (SVM), and Convolutional Neural Network (CNN) as classifier and
+they were trained with 4 newsgroups (alt.atheis, com.graphics, sci.med, soc.religion.christian) from
+the <a href="http://qwone.com/~jason/20Newsgroups/">20newsgroup</a> dataset.</p>
+
 <form action="{% url 'classifier:predict' %}" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
