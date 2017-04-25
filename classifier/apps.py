@@ -1,6 +1,6 @@
 import re
 from django.apps import AppConfig
-from opentc.client import Client
+from opentc.util.client import Client
 
 
 class ClassifierConfig(AppConfig):
