@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 import json
-import re
+import datetime
 from .models import Classifier, Classes, Classification
 from classifier.apps import ClassifierConfig
 from .forms import NameForm, MessageForm
@@ -91,9 +91,17 @@ def classifications_collection(request):
         response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
         result = json.loads(response.decode('utf-8'))["result"]
         result = json.dumps(result)
+        ip_address = request.META['REMOTE_ADDR']
+        if request.user.username == "":
+            user = "anonymous"
+        else:
+            user = request.user.username
+        now = datetime.datetime.now()
         data = {'data': request.data.get('message'),
-                'user': request.user.username,
-                'result': result}
+                'user': user,
+                'result': result,
+                'ip_address': ip_address,
+                'date': now}
         serializer = ClassificationSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

@@ -23,4 +23,4 @@ class Classification(models.Model):
     data = models.TextField(max_length=1024)
     result = models.CharField(max_length=128, null=True)
     date = models.DateTimeField(null=True)
-    ip_address = models.CharField(max_length=128, null=True)
+    ip_address = models.CharField(max_length=32, null=True)
