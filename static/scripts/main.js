@@ -22,7 +22,7 @@ $(function() {
                 result = JSON.parse(json);
                 $('#prediction-result')[0].innerHTML = "";
                 content = "<strong>Prediction result:</strong>";
-                content += "<table id='prediction' class='table table-striped'>";
+                content += "<table id='prediction' class='table table-striped table-nonfluid'>";
                 content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
                 content += "<tbody>";
                 for(classifier in result) {

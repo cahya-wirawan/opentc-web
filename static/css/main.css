@@ -1,0 +1,7 @@
+.table-nonfluid {
+   width: auto !important;
+}
+
+.table-nonfluid>thead>tr>th {
+   width: 120px;
+}
