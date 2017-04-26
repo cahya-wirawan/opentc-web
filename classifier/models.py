@@ -24,3 +24,6 @@ class Classification(models.Model):
     result = models.CharField(max_length=128, null=True)
     date = models.DateTimeField(null=True)
     ip_address = models.CharField(max_length=32, null=True)
+
+    def __str__(self):
+        return "{}: {}".format(self.ip_address, self.data[:32])

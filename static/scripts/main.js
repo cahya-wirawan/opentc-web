@@ -4,6 +4,8 @@ $(function() {
     // Submit post on submit
     $('#message-form').on('submit', function(event){
         event.preventDefault();
+        $('#results').html("");
+        $('#prediction-result').html("");
         console.log("form submitted!")  // sanity check
         prediction_request();
     });
