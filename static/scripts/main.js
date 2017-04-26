@@ -35,7 +35,8 @@ $(function() {
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "
+                    + xhr.responseJSON["detail"] +
                     " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }

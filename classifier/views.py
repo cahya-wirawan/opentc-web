@@ -9,11 +9,11 @@ import datetime
 from .models import Classifier, Classes, Classification
 from classifier.apps import ClassifierConfig
 from .forms import NameForm, MessageForm
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework import status
 from classifier.serializers import ClassificationSerializer
-
 
 def index(request):
     classifier_list = Classifier.objects.order_by('name')[:5]
@@ -80,6 +80,7 @@ def request_info(request):
 
 
 @api_view(['GET', 'POST'])
+@throttle_classes([UserRateThrottle, AnonRateThrottle])
 def classifications_collection(request):
     if request.method == 'GET':
         posts = Classification.objects.all()
@@ -91,7 +92,11 @@ def classifications_collection(request):
         response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
         result = json.loads(response.decode('utf-8'))["result"]
         result = json.dumps(result)
-        ip_address = request.META['REMOTE_ADDR']
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip_address = x_forwarded_for.split(',')[0]
+        else:
+            ip_address = request.META.get('REMOTE_ADDR')
         if request.user.username == "":
             user = "anonymous"
         else:
