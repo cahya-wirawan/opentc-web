@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from classifier import views
 
 urlpatterns = [
+    # api
+    url(r'^api/v1/classifications/$', views.classifications_collection, name='classifications_collection'),
+    url(r'^api/v1/classifications/(?P<pk>[0-9]+)$', views.classifications_element, name='classifications_element'),
+
     url(r'^classifier/', include('classifier.urls')),
     url(r'^admin/', admin.site.urls),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

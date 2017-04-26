@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^request_submit/$', views.request_submit, name='request_submit'),
     # ex: /classifier/request_info/
     url(r'^request_info$', views.request_info, name='request_info'),
+
 ]
