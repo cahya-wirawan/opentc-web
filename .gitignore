@@ -92,4 +92,4 @@ ENV/
 data/
 
 db.sqlite3
-settings_secret.py
+opentcweb/settings/__init__.py
