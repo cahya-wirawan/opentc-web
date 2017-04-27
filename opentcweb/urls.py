@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^api/v1/classifications/$', views.classifications_collection, name='classifications_collection'),
     url(r'^api/v1/classifications/(?P<pk>[0-9]+)$', views.classifications_element, name='classifications_element'),
 
+
+    # ex: /demo/
+    url(r'^demo/$', views.predict, name='predict'),
     url(r'^classifier/', include('classifier.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
