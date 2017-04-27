@@ -93,3 +93,4 @@ data/
 
 db.sqlite3
 opentcweb/settings/__init__.py
+classifier/migrations/
