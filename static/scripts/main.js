@@ -23,8 +23,8 @@ $(function() {
                 console.log(json); // log the returned json to the console
                 result = JSON.parse(json);
                 $('#prediction-result')[0].innerHTML = "";
-                content = "<strong>Prediction result:</strong>";
-                content += "<table id='prediction' class='table table-striped table-nonfluid'>";
+                content = "";
+                content += "<table id='prediction' class='table table-striped table-bordered table-nonfluid'>";
                 content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
                 content += "<tbody>";
                 sorted_classifiers = Object.keys(result).sort()
