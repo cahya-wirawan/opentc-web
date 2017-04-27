@@ -1,11 +1,12 @@
+import json
+import datetime
 from urllib.parse import urlencode, unquote
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-import json
-import datetime
+from django.conf import settings
 from .models import Classifier, Classes, Classification
 from classifier.apps import ClassifierConfig
 from .forms import NameForm, MessageForm
@@ -91,6 +92,10 @@ def classifications_collection(request):
         message = ClassifierConfig.remove_newline.sub(' ', message)
         response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
         result = json.loads(response.decode('utf-8'))["result"]
+        short_result = json.dumps(result)
+        classifiers = result.keys()
+        for i in classifiers:
+            result[settings.CLASSIFIERS[i]] = result.pop(i)
         result = json.dumps(result)
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -104,7 +109,7 @@ def classifications_collection(request):
         now = datetime.datetime.now()
         data = {'data': request.data.get('message'),
                 'user': user,
-                'result': result,
+                'result': short_result,
                 'ip_address': ip_address,
                 'date': now}
         serializer = ClassificationSerializer(data=data)

@@ -28,7 +28,7 @@ $(function() {
                 content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
                 content += "<tbody>";
                 for(classifier in result) {
-                    content += "<tr><td><strong>" + classifier + "</strong> <td><em>" + result[classifier]
+                    content += "<tr><td>" + classifier + "<td><em>" + result[classifier]
                     + "</em></td></tr>";
                 }
                 content += "</tbody></table>";
