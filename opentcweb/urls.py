@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from classifier import views
 
 urlpatterns = [
@@ -24,7 +25,7 @@ urlpatterns = [
     url(r'^api/v1/classifications/$', views.classifications_collection, name='classifications_collection'),
     url(r'^api/v1/classifications/(?P<pk>[0-9]+)$', views.classifications_element, name='classifications_element'),
 
-
+    url(r'^$', RedirectView.as_view(url='/demo')),
     # ex: /demo/
     url(r'^demo/$', views.predict, name='predict'),
     url(r'^classifier/', include('classifier.urls')),

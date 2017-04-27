@@ -95,7 +95,8 @@ def classifications_collection(request):
         short_result = json.dumps(result)
         classifiers = result.keys()
         for i in classifiers:
-            result[settings.CLASSIFIERS[i]] = result.pop(i)
+            longname_classifier = settings.CLASSIFIERS[i]
+            result[longname_classifier] = result.pop(i)
         result = json.dumps(result)
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
