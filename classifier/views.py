@@ -93,10 +93,11 @@ def classifications_collection(request):
         response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
         result = json.loads(response.decode('utf-8'))["result"]
         short_result = json.dumps(result)
-        classifiers = result.keys()
-        for i in classifiers:
-            longname_classifier = settings.CLASSIFIERS[i]
-            result[longname_classifier] = result.pop(i)
+        classifiers = []
+        for key in result:
+            classifiers.append(key)
+        for key in classifiers:
+            result[settings.CLASSIFIERS[key]] = result.pop(key)
         result = json.dumps(result)
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:

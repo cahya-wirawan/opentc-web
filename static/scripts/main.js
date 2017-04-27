@@ -27,8 +27,9 @@ $(function() {
                 content += "<table id='prediction' class='table table-striped table-nonfluid'>";
                 content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
                 content += "<tbody>";
-                for(classifier in result) {
-                    content += "<tr><td>" + classifier + "<td><em>" + result[classifier]
+                sorted_classifiers = Object.keys(result).sort()
+                for(i in sorted_classifiers) {
+                    content += "<tr><td>" + sorted_classifiers[i] + "<td><em>" + result[sorted_classifiers[i]]
                     + "</em></td></tr>";
                 }
                 content += "</tbody></table>";

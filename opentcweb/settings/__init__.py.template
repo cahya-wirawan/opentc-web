@@ -1,0 +1,10 @@
+from __future__ import absolute_import
+from .dev import *
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# This file must not be included in repository!
+SECRET_KEY = 'Here should be the secret, please change it and rename this file to __init__.py!'
+DATABASES['default']['PASSWORD'] = 'secret!'
+
+##### OTHER SECRETS
+AWS_SECRET_ACCESS_KEY = "secret!"
