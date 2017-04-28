@@ -5,3 +5,7 @@
 .table-nonfluid>thead>tr>th {
    width: 220px;
 }
+
+#prediction-panel {
+   display: none;
+}

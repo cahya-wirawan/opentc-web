@@ -6,6 +6,7 @@ $(function() {
         event.preventDefault();
         $('#results').html("");
         $('#prediction-result').html("");
+        $('#prediction-panel').hide();
         console.log("form submitted!")  // sanity check
         prediction_request();
     });
@@ -23,6 +24,7 @@ $(function() {
                 console.log(json); // log the returned json to the console
                 result = JSON.parse(json);
                 $('#prediction-result')[0].innerHTML = "";
+                $('#prediction-panel').show();
                 content = "";
                 content += "<table id='prediction' class='table table-striped table-bordered table-nonfluid'>";
                 content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
