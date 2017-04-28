@@ -1,13 +1,20 @@
 {% extends "classifier/base.html" %}
 {% block content %}
 
-<h1>Text Classification</h1>
+<h1>Open Text Classification (OpenTC)</h1>
 {# Load the tag library #}
 {% load bootstrap3 %}
-
-<p>Currently it supports Bayes, Support Vector Machine (SVM), and Convolutional Neural Network (CNN) as classifier and
-they were trained with 4 newsgroups (alt.atheis, com.graphics, sci.med, soc.religion.christian) from
-the <a href="http://qwone.com/~jason/20Newsgroups/">20newsgroup</a> dataset.</p>
+<p>
+    This is a demo website to show the capability of <a href="https://github.com/cahya-wirawan/opentc">OpenTC</a>.
+    The OpenTC server is running in the background listening to the port 3333. The website is running Django, and forward
+    the prediction request from the web client to the OpenTC server, and forward back again the result from the server
+    to the web client as json response.
+</p>
+<p>
+    Currently it supports Bayes, Support Vector Machine (SVM), and Convolutional Neural Network (CNN) as classifier
+    and they were trained with 4 newsgroups (alt.atheis, com.graphics, sci.med, soc.religion.christian) from
+    the <a href="http://qwone.com/~jason/20Newsgroups/">20newsgroup</a> dataset.
+</p>
 
 <form id="message-form" action="{% url 'classifier:predict' %}" method="post" class="form">
     {% csrf_token %}
