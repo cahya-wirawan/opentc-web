@@ -11,7 +11,7 @@ $(function() {
         $('.progress-bar').css('width', '0%').attr('aria-valuenow', 0);
         $('.progress-bar').animate({
             width: "100%"
-        }, 6000);
+        }, 7000);
         console.log("form submitted!")  // sanity check
         prediction_request();
     });
