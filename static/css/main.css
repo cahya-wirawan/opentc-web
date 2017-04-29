@@ -6,6 +6,11 @@
    width: 220px;
 }
 
-#prediction-panel {
+#prediction-panel, #progress-panel  {
    display: none;
+}
+
+.progress.active .progress-bar {
+    -webkit-transition: none !important;
+    transition: none !important;
 }

@@ -7,6 +7,11 @@ $(function() {
         $('#results').html("");
         $('#prediction-result').html("");
         $('#prediction-panel').hide();
+        $('#progress-panel').show();
+        $('.progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+        $('.progress-bar').animate({
+            width: "100%"
+        }, 6000);
         console.log("form submitted!")  // sanity check
         prediction_request();
     });
@@ -24,6 +29,7 @@ $(function() {
                 console.log(json); // log the returned json to the console
                 result = JSON.parse(json);
                 $('#prediction-result')[0].innerHTML = "";
+                $('#progress-panel').hide();
                 $('#prediction-panel').show();
                 content = "";
                 content += "<table id='prediction' class='table table-striped table-bordered table-nonfluid'>";
