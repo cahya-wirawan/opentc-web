@@ -15,7 +15,7 @@ $(function() {
     function prediction_request() {
         console.log("prediction_request") // sanity check
         $.ajax({
-            url : "/api/v1/classifications/", // the endpoint
+            url : "/api/v1/prediction/", // the endpoint
             type : "POST", // http method
             data : { message : $('#message-text').val() }, // data sent with the post request
             // handle a successful response

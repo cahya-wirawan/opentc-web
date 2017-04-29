@@ -1,12 +1,13 @@
 import json
 import datetime
 from urllib.parse import urlencode, unquote
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from .models import Classifier, Classes, Classification
 from classifier.apps import ClassifierConfig
 from .forms import NameForm, MessageForm
@@ -28,21 +29,7 @@ def detail(request, classifier_id):
 
 
 def predict(request):
-    response = ClassifierConfig.opentc.command("PING\n")
-    response = json.loads(response.decode('utf-8'))
-    print("response: {}".format(response))
-    if request.method == "POST":
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.cleaned_data['message']
-            message = ClassifierConfig.remove_newline.sub(' ', message)
-            response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
-            result = json.loads(response.decode('utf-8'))["result"]
-            request.session['data'] = result
-            # return render(request, 'classifier/predict.html', {'form': form})
-            return HttpResponseRedirect(reverse('classifier:predict_result'))
-    else:
-        form = MessageForm()
+    form = MessageForm()
     return render(request, 'classifier/predict.html', {'form': form})
 
 
@@ -80,48 +67,16 @@ def request_info(request):
         return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
+@login_required
 @throttle_classes([UserRateThrottle, AnonRateThrottle])
 def classifications_collection(request):
-    if request.method == 'GET':
-        posts = Classification.objects.all()
-        serializer = ClassificationSerializer(posts, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        message = request.data.get('message')
-        message = ClassifierConfig.remove_newline.sub(' ', message)
-        response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
-        result = json.loads(response.decode('utf-8'))["result"]
-        short_result = json.dumps(result)
-        classifiers = []
-        for key in result:
-            classifiers.append(key)
-        for key in classifiers:
-            result[settings.CLASSIFIERS[key]] = result.pop(key)
-        result = json.dumps(result)
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip_address = x_forwarded_for.split(',')[0]
-        else:
-            ip_address = request.META.get('REMOTE_ADDR')
-        if request.user.username == "":
-            user = "anonymous"
-        else:
-            user = request.user.username
-        now = datetime.datetime.now()
-        data = {'data': request.data.get('message'),
-                'user': user,
-                'result': short_result,
-                'ip_address': ip_address,
-                'date': now}
-        serializer = ClassificationSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(result, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    posts = Classification.objects.order_by('-date')[:5]
+    serializer = ClassificationSerializer(posts, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
+@login_required
 def classifications_element(request, pk):
     try:
         post = Classification.objects.get(pk=pk)
@@ -131,3 +86,39 @@ def classifications_element(request, pk):
     if request.method == 'GET':
         serializer = ClassificationSerializer(post)
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+@throttle_classes([UserRateThrottle, AnonRateThrottle])
+def prediction(request):
+    message = request.data.get('message')
+    message = ClassifierConfig.remove_newline.sub(' ', message)
+    response = ClassifierConfig.opentc.predict_stream(message.encode("utf-8"))
+    result = json.loads(response.decode('utf-8'))["result"]
+    short_result = json.dumps(result)
+    classifiers = []
+    for key in result:
+        classifiers.append(key)
+    for key in classifiers:
+        result[settings.CLASSIFIERS[key]] = result.pop(key)
+    result = json.dumps(result)
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip_address = x_forwarded_for.split(',')[0]
+    else:
+        ip_address = request.META.get('REMOTE_ADDR')
+    if request.user.username == "":
+        user = "anonymous"
+    else:
+        user = request.user.username
+    now = datetime.datetime.now()
+    data = {'data': request.data.get('message'),
+            'user': user,
+            'result': short_result,
+            'ip_address': ip_address,
+            'date': now}
+    serializer = ClassificationSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(result, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

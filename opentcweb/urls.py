@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_views
 from classifier import views
 
 urlpatterns = [
     # api
+    url(r'^api/v1/prediction/$', views.prediction, name='prediction'),
     url(r'^api/v1/classifications/$', views.classifications_collection, name='classifications_collection'),
     url(r'^api/v1/classifications/(?P<pk>[0-9]+)$', views.classifications_element, name='classifications_element'),
 
@@ -29,5 +31,8 @@ urlpatterns = [
     # ex: /demo/
     url(r'^demo/$', views.predict, name='predict'),
     url(r'^classifier/', include('classifier.urls')),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view()),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
