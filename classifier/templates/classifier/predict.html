@@ -12,11 +12,16 @@
 </p>
 <p>
     Currently it supports Bayes, Support Vector Machine (SVM), and Convolutional Neural Network (CNN) as classifier
-    and they were trained with all 20 newsgroups (alt.atheism, comp.graphics, comp.os.ms-windows.misc,
-    comp.sys.ibm.pc.hardware, comp.sys.mac.hardware, comp.windows.x, misc.forsale, rec.autos, rec.motorcycles,
-    rec.sport.baseball, rec.sport.hockey, sci.crypt, sci.electronics, sci.med, sci.space, soc.religion.christian,
-    talk.politics.guns, talk.politics.mideast, talk.politics.misc, talk.religion.misc) from
-    the <a href="http://qwone.com/~jason/20Newsgroups/">20newsgroup</a> dataset.
+    and they were trained with all 20 newsgroups (grouped by subject similarities) from
+    the <a href="http://qwone.com/~jason/20Newsgroups/">20newsgroup</a> dataset:
+    <ul>
+        <li>comp.graphics, comp.os.ms-windows.misc, comp.sys.ibm.pc.hardware, comp.sys.mac.hardware, comp.windows.x</li>
+        <li>rec.autos, rec.motorcycles, rec.sport.baseball, rec.sport.hockey</li>
+        <li>sci.crypt, sci.electronics, sci.med, sci.space</li>
+        <li>misc.forsale</li>
+        <li>talk.politics.misc, talk.politics.guns, talk.politics.mideast </li>
+        <li>talk.religion.misc, alt.atheism, soc.religion.christian</li>
+    </ul>
 </p>
 
 <form id="message-form" class="form">

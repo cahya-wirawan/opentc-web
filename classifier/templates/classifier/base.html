@@ -24,6 +24,10 @@
 </head>
 <body>
 
+{% if ga_id %}
+{% include "classifier/ga.html" %}
+{% endif %}
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">

@@ -30,7 +30,10 @@ def detail(request, classifier_id):
 
 def predict(request):
     form = MessageForm()
-    return render(request, 'classifier/predict.html', {'form': form})
+    ga_id = None
+    if hasattr(settings, "GOOGLE_ANALYTICS_PROPERTY_ID"):
+        ga_id = settings.GOOGLE_ANALYTICS_PROPERTY_ID
+    return render(request, 'classifier/predict.html', {'form': form, 'ga_id': ga_id})
 
 
 def predict_result(request):
@@ -112,7 +115,7 @@ def prediction(request):
     else:
         user = request.user.username
     now = datetime.datetime.now()
-    data = {'data': request.data.get('message'),
+    data = {'data': request.data.get('message')[:1024],
             'user': user,
             'result': short_result,
             'ip_address': ip_address,
