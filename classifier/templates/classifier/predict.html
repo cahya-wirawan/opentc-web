@@ -5,8 +5,8 @@
 {# Load the tag library #}
 {% load bootstrap3 %}
 <p>
-    This is a demo website to show the capability of <a href="https://github.com/cahya-wirawan/opentc">OpenTC</a>.
-    The OpenTC server is running in the background listening to the port 3333. The website is running Django, and forward
+    This is a demo website to show the capability of <a href="https://github.com/cahya-wirawan/opentc">OpenTC</a>,
+    which is running in the background listening to the port 3333. The website is running Django, and forward
     the prediction request from the web client to the OpenTC server, and forward back again the result from the server
     to the web client as json response.
 </p>
@@ -22,6 +22,10 @@
         <li>talk.politics.misc, talk.politics.guns, talk.politics.mideast </li>
         <li>talk.religion.misc, alt.atheism, soc.religion.christian</li>
     </ul>
+</p>
+<p>
+    The analysis of a message request takes around 6 seconds due to the limited performance of my virtual machine,
+    please also be patient. As comparison, my old Mac Book Pro from 2012 needs only 0.5 second for each request.
 </p>
 
 <form id="message-form" class="form">
