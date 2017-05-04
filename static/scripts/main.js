@@ -1,6 +1,5 @@
 $(function() {
 
-
     // Submit post on submit
     $('#message-form').on('submit', function(event){
         event.preventDefault();
@@ -106,3 +105,35 @@ $(function() {
     });
 
 });
+
+
+function get_random_article() {
+    console.log("get_random_article") // sanity check
+    $('#results').html("");
+    $('#prediction-result').html("");
+    $('#prediction-panel').hide();
+    $('#progress-panel').show();
+    $('.progress-bar').css('width', '0%').attr('aria-valuenow', 0);
+    $('.progress-bar').animate({
+        width: "100%"
+    }, 1500);
+    $.ajax({
+        url : "/api/v1/get_random_article/", // the endpoint
+        type : "GET", // http method
+        // handle a successful response
+        success : function(json) {
+            // $('#message-text').val(''); // remove the value from the input
+            console.log(json); // log the returned json to the console
+            result = JSON.parse(json);
+            $('#progress-panel').hide();
+            $('#message-text').val(result["article"]);
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "
+                + xhr.responseJSON["detail"] +
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}

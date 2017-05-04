@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^api/v1/prediction/$', views.prediction, name='prediction'),
     url(r'^api/v1/classifications/$', views.classifications_collection, name='classifications_collection'),
     url(r'^api/v1/classifications/(?P<pk>[0-9]+)$', views.classifications_element, name='classifications_element'),
-
+    url(r'^api/v1/get_random_article/$', views.get_random_article, name='get_random_article'),
     url(r'^$', RedirectView.as_view(url='/demo')),
     # ex: /demo/
     url(r'^demo/$', views.predict, name='predict'),

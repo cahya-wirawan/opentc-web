@@ -15,7 +15,32 @@ from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer
+from bs4 import BeautifulSoup
+import urllib.request
+from random import choice
 from classifier.serializers import ClassificationSerializer
+
+
+categories = [
+    "Natural_resources",
+    "Medicine",
+    "Religion",
+    "Computing",
+    "Electronics",
+    "Automobiles",
+    "Baseball",
+    "Hockey",
+    "Outer_space",
+    "Christians",
+    "Atheism",
+    "Politics",
+    "Middle_East",
+    "Motorcycles",
+    "Cryptography",
+    "Computer_hardware",
+    "Computer_graphics"
+]
 
 def index(request):
     classifier_list = Classifier.objects.order_by('name')[:5]
@@ -40,6 +65,25 @@ def predict_result(request):
     data = request.session.get("data")
     return render(request, 'classifier/predict_result.html', {'data': data})
 
+
+@api_view(['GET'])
+def get_random_article(request):
+    base_url = "https://en.wikipedia.org/wiki/Special:RandomInCategory/"
+    category = choice(categories)
+    url = base_url + category
+    content_text = ""
+    while True:
+        with urllib.request.urlopen(url) as response:
+            html_doc = response.read()
+            soup = BeautifulSoup(html_doc, 'html.parser')
+            content_html = soup.find(id="mw-content-text")
+            content_text = " ".join(content_html.get_text().replace("\n", " ").split(" ")[:100]).strip()
+            if content_text.startswith("Subcategories") or content_text.startswith("This") \
+                    or content_text.startswith("Wikimedia") or content_text.startswith("The main article"):
+                continue
+            break
+    response = {"article": content_text}
+    return Response(JSONRenderer().render(response))
 
 @csrf_exempt
 def request_submit(request):
