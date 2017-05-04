@@ -77,7 +77,7 @@ def get_random_article(request):
             html_doc = response.read()
             soup = BeautifulSoup(html_doc, 'html.parser')
             content_html = soup.find(id="mw-content-text")
-            content_text = " ".join(content_html.get_text().replace("\n", " ").split(" ")[:100]).strip()
+            content_text = " ".join(content_html.get_text().replace("\n", " ").split(" ")[:256]).strip()
             if content_text.startswith("Subcategories") or content_text.startswith("This") \
                     or content_text.startswith("Wikimedia") or content_text.startswith("The main article"):
                 continue
@@ -159,7 +159,7 @@ def prediction(request):
     else:
         user = request.user.username
     now = datetime.datetime.now()
-    data = {'data': request.data.get('message')[:2048],
+    data = {'data': request.data.get('message')[:1024],
             'user': user,
             'result': short_result,
             'ip_address': ip_address,
