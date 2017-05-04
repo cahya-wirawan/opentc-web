@@ -159,7 +159,7 @@ def prediction(request):
     else:
         user = request.user.username
     now = datetime.datetime.now()
-    data = {'data': request.data.get('message')[:1024],
+    data = {'data': request.data.get('message')[:2048],
             'user': user,
             'result': short_result,
             'ip_address': ip_address,
