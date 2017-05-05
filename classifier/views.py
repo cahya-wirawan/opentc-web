@@ -50,8 +50,11 @@ def predict_result(request):
 def get_random_article(request):
     base_url = "https://en.wikipedia.org/wiki/Special:RandomInCategory/"
     categories = Wikipedia.objects.all()
-    category = choice(categories)
-    url = base_url + str(category)
+    if len(categories) == 0:
+        category = "Medicine"
+    else:
+        category = str(choice(categories))
+    url = base_url + category
     content_text = ""
     while True:
         with urllib.request.urlopen(url) as response:
