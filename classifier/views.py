@@ -8,9 +8,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .models import Classifier, Classes, Classification
-from classifier.apps import ClassifierConfig
-from .forms import NameForm, MessageForm
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
@@ -19,28 +16,11 @@ from rest_framework.renderers import JSONRenderer
 from bs4 import BeautifulSoup
 import urllib.request
 from random import choice
+from .forms import NameForm, MessageForm
 from classifier.serializers import ClassificationSerializer
+from .models import Classifier, Classes, Classification, Wikipedia
+from classifier.apps import ClassifierConfig
 
-
-categories = [
-    "Natural_resources",
-    "Medicine",
-    "Religion",
-    "Computing",
-    "Electronics",
-    "Automobiles",
-    "Baseball",
-    "Hockey",
-    "Outer_space",
-    "Christians",
-    "Atheism",
-    "Politics",
-    "Middle_East",
-    "Motorcycles",
-    "Cryptography",
-    "Computer_hardware",
-    "Computer_graphics"
-]
 
 def index(request):
     classifier_list = Classifier.objects.order_by('name')[:5]
@@ -69,8 +49,9 @@ def predict_result(request):
 @api_view(['GET'])
 def get_random_article(request):
     base_url = "https://en.wikipedia.org/wiki/Special:RandomInCategory/"
+    categories = Wikipedia.objects.all()
     category = choice(categories)
-    url = base_url + category
+    url = base_url + str(category)
     content_text = ""
     while True:
         with urllib.request.urlopen(url) as response:
