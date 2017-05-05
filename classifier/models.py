@@ -27,3 +27,11 @@ class Classification(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.ip_address, self.data[:32])
+
+
+class Wikipedia(models.Model):
+    category = models.CharField(max_length=128)
+    description = models.CharField(max_length=256, null=True)
+
+    def __str__(self):
+        return self.category
