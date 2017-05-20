@@ -74,12 +74,12 @@ def request_submit(request):
     data = {"result": ""}
     if request.method == "POST":
         if "type" in request.POST and "result" in request.POST:
-            type = request.POST["type"]
-            result = request.POST["result"]
+            # type = request.POST["type"]
+            # result = request.POST["result"]
             # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: -]*$", result):
-            if ClassifierConfig.input_data_validity.search(type) and \
-                    ClassifierConfig.input_data_validity.search(result):
-                data = {"type": request.POST["type"], "result": request.POST["result"]}
+            # if ClassifierConfig.input_data_validity.search(type) and \
+            #         ClassifierConfig.input_data_validity.search(result):
+            data = {"type": request.POST["type"], "result": request.POST["result"]}
     encoded = urlencode(data)
     redirect_url = "http://{}{}?{}".format(request.META['HTTP_HOST'],
                                            reverse('classifier:request_info'),
@@ -91,13 +91,10 @@ def request_info(request):
     type = request.GET.get("type", "ml")
     data = request.GET.get("result", "{}")
     # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: -]*$", data):
-    if ClassifierConfig.input_data_validity.search(data):
-        try:
-            result = json.loads(data)
-            return render(request, 'classifier/request_info.html', {'type': type, 'result': result})
-        except ValueError:
-            return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
-    else:
+    try:
+        result = json.loads(data)
+        return render(request, 'classifier/request_info.html', {'type': type, 'result': result})
+    except ValueError:
         return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
 
 
