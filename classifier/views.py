@@ -86,12 +86,13 @@ def request_submit(request):
 
 
 def request_info(request):
+    type = request.GET.get("type", "ml")
     data = request.GET.get("result", "{}")
     # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", data):
     if ClassifierConfig.input_data_validity.search(data):
         try:
             result = json.loads(data)
-            return render(request, 'classifier/request_info.html', {'result': result})
+            return render(request, 'classifier/request_info.html', {'type': type, 'result': result})
         except ValueError:
             return render(request, 'classifier/request_info.html', {'error_message': "The input data is not valid"})
     else:

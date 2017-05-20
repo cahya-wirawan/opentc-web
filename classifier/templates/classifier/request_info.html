@@ -1,17 +1,25 @@
 {% extends "classifier/base.html" %}
 {% block content %}
-<h1>Text Classification</h1>
+<h1>Content blocked</h1>
 
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <ul>
-    {% for name, analysis in result.items %}
-        <li><label name="{{ name }}">{{ name }}</label></li>
-        <ul>
-        {% for classifier, categories in analysis.items %}
-            <li><label name="{{ classifier }}">{{ classifier }}: {{ categories }}</label></li>
-        {% endfor %}
-        </ul>
-    {% endfor %}
-    </ul>
-
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% else %}
+        <p>The data transfer to the website has been blocked due to the following reason:<p>
+        {% if type == "ml" %}
+            <p>The following data has been categorized as:<p>
+            <ul>
+            {% for name, analysis in result.items %}
+                <li><label name="{{ name }}">{{ name }}</label></li>
+                <ul>
+                {% for classifier, categories in analysis.items %}
+                    <li><label name="{{ classifier }}">{{ classifier }}: {{ categories }}</label></li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+            </ul>
+        {% elif type == "cf" %}
+            <p>The data "{{ result.string }}" is a restricted string<p>
+        {% endif %}
+    {% endif %}
 {% endblock %}
