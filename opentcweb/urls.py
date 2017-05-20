@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/demo')),
     # ex: /demo/
     url(r'^demo/$', views.predict, name='predict'),
-    url(r'^report/$', views.request_info, name='request_info'),
+    url(r'^report/$', views.request_submit, name='request_submit'),
     url(r'^classifier/', include('classifier.urls')),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),

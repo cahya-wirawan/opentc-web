@@ -73,11 +73,13 @@ def get_random_article(request):
 def request_submit(request):
     data = {"result": ""}
     if request.method == "POST":
-        if "result" in request.POST:
+        if "type" in request.POST and "result" in request.POST:
+            type = request.POST["type"]
             result = request.POST["result"]
             # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", result):
-            if ClassifierConfig.input_data_validity.search(result):
-                data = {"result": request.POST["result"]}
+            if ClassifierConfig.input_data_validity.search(type) and \
+                    ClassifierConfig.input_data_validity.search(result):
+                data = {"type": request.POST["type"], "result": request.POST["result"]}
     encoded = urlencode(data)
     redirect_url = "http://{}{}?{}".format(request.META['HTTP_HOST'],
                                            reverse('classifier:request_info'),
