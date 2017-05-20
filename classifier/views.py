@@ -76,7 +76,7 @@ def request_submit(request):
         if "type" in request.POST and "result" in request.POST:
             type = request.POST["type"]
             result = request.POST["result"]
-            # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", result):
+            # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: -]*$", result):
             if ClassifierConfig.input_data_validity.search(type) and \
                     ClassifierConfig.input_data_validity.search(result):
                 data = {"type": request.POST["type"], "result": request.POST["result"]}
@@ -90,7 +90,7 @@ def request_submit(request):
 def request_info(request):
     type = request.GET.get("type", "ml")
     data = request.GET.get("result", "{}")
-    # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$", data):
+    # if re.match("^[A-Za-z0-9\.\[\]\{\}\'\",: -]*$", data):
     if ClassifierConfig.input_data_validity.search(data):
         try:
             result = json.loads(data)

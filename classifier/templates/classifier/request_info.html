@@ -7,10 +7,9 @@
     {% else %}
         <p>The data communication to the website has been blocked due to the following reason:<p>
         {% if type == "ml" %}
-            <p>The following data has been categorized as:<p>
             <ul>
             {% for name, analysis in result.items %}
-                <li><label name="{{ name }}">{{ name }}</label></li>
+                <li><label name="{{ name }}">{{ name }}</label> has been categorized as:</li>
                 <ul>
                 {% for classifier, categories in analysis.items %}
                     <li><label name="{{ classifier }}">{{ classifier }}: {{ categories }}</label></li>
@@ -19,7 +18,7 @@
             {% endfor %}
             </ul>
         {% elif type == "cf" %}
-            <p>The data "{{ result.string }}" is a restricted string<p>
+            <p><label name="{{ result.string }}">"{{ result.string }}"</label> is a restricted string<p>
         {% endif %}
     {% endif %}
 {% endblock %}

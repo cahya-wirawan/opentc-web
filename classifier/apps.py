@@ -8,7 +8,7 @@ class ClassifierConfig(AppConfig):
     verbose_name = "Open Text Classification - Web"
     opentc = Client()
     remove_newline = re.compile('\r?\n')
-    input_data_validity = re.compile("^[A-Za-z0-9\.\[\]\{\}\'\",: ]*$")
+    input_data_validity = re.compile("^[A-Za-z0-9\.\[\]\{\}\'\",: -]*$")
 
     def ready(self):
         print("OpenTC Initialization")
