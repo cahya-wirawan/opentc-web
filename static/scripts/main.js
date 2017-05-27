@@ -32,14 +32,20 @@ $(function() {
                 $('#prediction-panel').show();
                 content = "";
                 content += "<table id='prediction' class='table table-striped table-bordered table-nonfluid'>";
-                content += "<thead class='thead-inverse'><tr><th>Classifier</th><th>Category</th></tr></thead>";
-                content += "<tbody>";
+                content += "<thead class='thead-inverse'>";
+                content += "<tr><th>Classifier</th><th>Category</th><th>Probability*</th></tr>";
+                content += "</thead><tbody>";
                 sorted_classifiers = Object.keys(result).sort()
                 for(i in sorted_classifiers) {
-                    content += "<tr><td>" + sorted_classifiers[i] + "<td><em>" + result[sorted_classifiers[i]]
-                    + "</em></td></tr>";
+                    str = result[sorted_classifiers[i]][0].split(":");
+                    category = str[0];
+                    probability = str[1]? str[1]:"";
+                    content += "<tr><td>" + sorted_classifiers[i] + "</td><td><em>" + category
+                    + "</em></td><td>" + probability + "</td></tr>";
                 }
                 content += "</tbody></table>";
+                content += "<p><em>*The probability of the predicted category compared to other categories "
+                content += "within a classifier.</em>";
                 $('#prediction-result').append(content);
                 console.log("success"); // another sanity check
             },
