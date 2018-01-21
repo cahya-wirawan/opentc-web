@@ -22,7 +22,7 @@ BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'opentc.oldjava.org']
+ALLOWED_HOSTS = ['localhost', 'opentc.oldjava.org', '192.168.20.1']
 
 # Application definition
 
@@ -152,7 +152,7 @@ BOOTSTRAP3 = {
     'css_url': None,
 
     # The complete URL to the Bootstrap CSS file (None means no theme)
-    'theme_url': 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css',
+    'theme_url': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css',
 
     # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
     'javascript_url': None,
